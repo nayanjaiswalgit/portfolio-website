@@ -2,7 +2,8 @@ import Image from 'next/image';
 import logo from '@/public/logo.png'
 export default function Home() {
   return (
-    <div className=" h-[100vh] w-full flex  flex-col justify-center items-center gap-4 bg-gradient-to-t from-slate-200 to-white ">
+    <div className=" h-[100vh] w-full flex  flex-col justify-center items-center gap-4 bg-gradient-to-t
+     from-slate-200 to-white ">
       
         <div className="  text-center font-semibold opacity-95 ">
            <Image src={logo} width={200}  alt='logo ' className=' rounded-2xl border-2'></Image> </div>
