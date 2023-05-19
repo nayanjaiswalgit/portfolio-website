@@ -1,0 +1,33 @@
+import React, { useEffect, useRef, useState } from 'react';
+
+function getBase64Image(img: HTMLImageElement): string {
+  const canvas = document.createElement('canvas');
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const dataURL = canvas.toDataURL('image/png');
+  return dataURL.replace(/^data:image\/?[A-z]*;base64,/, '');
+}
+
+const MyComponent: React.FC = () => {
+  const imageRef = useRef<HTMLImageElement>(null);
+  const [base64, setBase64] = useState<string>('');
+
+  useEffect(() => {
+    if (imageRef.current) {
+      const base64Image = getBase64Image(imageRef.current);
+      setBase64(base64Image);
+    }
+  }, []);
+
+  return (
+    <div>
+      <img ref={imageRef} id="imageid" src="path/to/image.png" alt="Image" />
+      {/* Display the base64 data */}
+      {base64 && <p>{base64}</p>}
+    </div>
+  );
+};
+
+export default MyComponent;
