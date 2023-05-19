@@ -15,7 +15,7 @@ const Viewdetail:React.FC<ViewdetailProps> = ({viweDetailHandler , forwarddata})
 
     useEffect(() => {
 
-        console.log(base64())
+        
       }, []);
     
 
