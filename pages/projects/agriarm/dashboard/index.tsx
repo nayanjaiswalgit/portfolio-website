@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Image from "next/image";
+import Adddata from "@/components/projects/agriarm/Adddata";
 
 import { IoSearch } from "react-icons/io5";
 import { AiOutlineDashboard } from "react-icons/ai";
-import { FaUserCircle } from "react-icons/fa";
+
 import { MdControlCamera } from "react-icons/md";
 import { RiPlantFill } from "react-icons/ri";
 import Control from "@/components/projects/agriarm/Control";
@@ -13,13 +12,13 @@ import List from "@/components/projects/agriarm/List";
 
 const Agriarm = () => {
   const [control, showControl] = useState<boolean>(false);
+  const [adddata, showadddata] = useState<boolean>(false);
 
   const [forwarddata, setforwarddata] = useState<any>({});
 
   const viweDetailHandler = (data: any) => {
     setforwarddata(data);
   };
-
 
 
   return (
@@ -59,10 +58,20 @@ const Agriarm = () => {
                 <MdControlCamera className="text-2xl" />
               </button>
             </div>
+
+            <div className="   text-white  p-1.5 mt-1 font-medium bg-green-500  rounded-2xl flex justify-center items-center">
+              <button
+                onClick={() => showadddata((prevcontrol) => !prevcontrol)} className="font-bold text-s p-1"
+              >
+                Add Data
+               
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
-      <div className=" w-screen relative bg-green-100">
+     { !adddata && <div className=" w-screen relative bg-green-100">
         <div className="p-3  text-3xl font-semibold text-center ml-4">
           Overview
         </div>
@@ -78,12 +87,17 @@ const Agriarm = () => {
             <List setViweDetail={viweDetailHandler} />{" "}
           </div>
 
-         {forwarddata.humi   && <div className=" w-1/2 ">
-
-     <Viewdetail  viweDetailHandler = {viweDetailHandler} forwarddata = {forwarddata} />
-          </div>}
+          {forwarddata[0]?.humi && (
+            <div className=" w-1/2 ">
+              <Viewdetail
+                viweDetailHandler={viweDetailHandler}
+                forwarddata={forwarddata}
+              />
+            </div>
+          )}
         </div>
-      </div>
+      </div>}
+      {adddata && <Adddata/>}
     </div>
   );
 };

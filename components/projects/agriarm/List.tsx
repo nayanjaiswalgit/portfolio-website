@@ -1,5 +1,8 @@
 import React, { useEffect , useState } from 'react' ;
 
+import {  ref, child, get, set ,  onValue} from "firebase/database";
+import {database} from '../../../firebase'
+
 import Statusbar from '../agriarm/List';
 import { BsFillSuitHeartFill } from 'react-icons/bs';
 import { IoWaterSharp } from 'react-icons/io5';
@@ -19,46 +22,31 @@ const List:React.FC<ListProps> = ({setViweDetail}) => {
    const ButtonClick = (data:any) =>{setViweDetail(data) ; 
     
 }
+
+
   
 
 useEffect(() => {
-    
-    const fetchallsdata = async () =>{
-      try {
-        
-        const response =  await fetch("https://crop-monitoringsystem-default-rtdb.firebaseio.com/test.json")
-    
+  const db = database;
+  const starCountRef = ref(db, 'test/push/' );
+  onValue(starCountRef, (snapshot) => {
+    const data = snapshot.val();
+    setsData(data);
+  });
+  
 
-        if(!response.ok){
-          throw new Error("Something wrong ");
-        }
 
-        const responseData = await response.json();
-
-        setsData(responseData.push);
-       
-       
- 
-
-      }
-      catch(err){
-       
-      }
-    }
-   
-    fetchallsdata()
-   
-  }, [])
+}, [])
 
 
   
 
   return(
-    <div className='flex flex-wrap justify-evenly align-start'>
+    <div className='flex flex-wrap justify-evenly align-start   '>
   {
     
     Object.keys(sData).map((data: any , index :number)=>(
-     <div key={data.id} className=' max-w-md  rounded-lg overflow-hidden m-2 bg-slate-300 p-2 '>
+     <div key={index} className=' max-w-md  rounded-lg overflow-hidden m-2 bg-slate-300 p-2 '>
    
  
      <div className='relative group'> 
@@ -69,7 +57,7 @@ useEffect(() => {
      
      </div>
      <div className='flex   items-center justify-center'>
-     <button className=' text-center p-1 rounded-full m-2  px-3 bg-green-200 drop-shadow-lg hover:bg-green-300 font-semibold ' onClick={()=>ButtonClick(sData[data])    }>View More Details {data.humi}</button>
+     <button className=' text-center p-1 rounded-full m-2  px-3 bg-green-200 drop-shadow-lg hover:bg-green-300 font-semibold ' onClick={()=>ButtonClick([sData[data],data])    }>View Details</button>
      </div>
      </div>
     ))

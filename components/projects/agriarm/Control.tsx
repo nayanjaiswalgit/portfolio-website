@@ -1,4 +1,4 @@
-import Roundy from "roundy";
+import { getDatabase, ref, child, get, set ,  onValue} from "firebase/database";
 import { BsCameraFill } from "react-icons/bs";
 import { MdFlashlightOn } from "react-icons/md";
 import { FiArrowDown } from "react-icons/fi";
@@ -8,7 +8,7 @@ import { FiArrowRight } from "react-icons/fi";
 import { AiOutlinePause } from "react-icons/ai";
 import { MdSensors } from "react-icons/md";
 import { useEffect, useState } from "react";
-
+import {database} from '../../../firebase'
 const Control = () => {
   const [speed, setspeed] = useState([50, 50]);
   const [Camera, setCamera] = useState({ fetch: 0, led:0 });
@@ -68,17 +68,14 @@ const Control = () => {
   const fetchallsdata = async () =>{
     try {
       
-      const response =  await fetch("https://crop-monitoringsystem-default-rtdb.firebaseio.com/test/status.json")
-  
-
-      if(!response.ok){
-        throw new Error("Something wrong ");
-      }
-
-      const responseData = await response.json();
-
-     
-      setSetStatus(responseData);
+      const db = database;
+      const starCountRef = ref(db, 'test/status' );
+      onValue(starCountRef, (snapshot) => {
+        const data = snapshot.val();
+        setSetStatus(data)})
+        
+   
+ 
 
      
      
@@ -195,7 +192,7 @@ const Control = () => {
       </div>
       <div className="w-full h-6 rounded-lg mt-6">
         <div className="flex justify-center items-center font-semibold text-green-500">
-          {status}
+          {status == " " ? "sleep" : status}
         </div>
       </div>
       <div className="w-full  text-center font-semibold text-slate-600 ">
